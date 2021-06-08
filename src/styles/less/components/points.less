@@ -1,0 +1,26 @@
+.points {
+	display: flex;
+	justify-content: center;
+	margin: 20px -10px;
+
+	&__item {
+		@pointsSize: 45px;
+		position: relative;
+		display: flex;
+		flex-grow: 1;
+		justify-content: center;
+		height: @pointsSize;
+		line-height: @pointsSize;
+		margin: 10px;
+		cursor: pointer;
+		border: 1px solid @primary-color;
+		text-align: center;
+		font-weight: @bold;
+		font-size: 20px;
+
+		&--active {
+			background: @primary-color;
+			color: white;
+		}
+	}
+}

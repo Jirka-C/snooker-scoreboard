@@ -1,0 +1,61 @@
+.playerPanel {
+	text-align: center;
+	padding-bottom: 20px;
+	border: 1px solid transparent;
+	margin-top: 40px;
+
+	&__header {
+		background: @primary-color;
+		padding: 5px 0;
+		font-weight: @bold;
+		font-size: 14px;
+	}
+
+	&__name {
+		font-size: 30px;
+		padding: 20px;
+		font-family: @font;
+		text-align: center;
+		color: white;
+		background: @black;
+		border: 0;
+		max-width: 100%;
+	}
+
+	&__score {
+		margin: 15px 0;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+
+		&-header {
+			margin-bottom: 5px;
+		}
+
+		&-value {
+			font-size: 40px;
+			font-weight: @bold;
+		}
+
+		&--big {
+			margin: 30px 0;
+			color: darkgoldenrod;
+
+			.playerPanel__score-value {
+				font-size: 60px;
+			}
+		}
+	}
+	&__breaks {
+		margin: 10px 0;
+
+		span {
+			color: white;
+		}
+	}
+
+	&--active {
+		border-color: @primary-color;
+	}
+}

@@ -1,0 +1,46 @@
+* {
+	box-sizing: border-box;
+
+	&:focus {
+		outline: none;
+	}
+}
+
+html {
+	font-size: 16px;
+	font-family: @font;
+}
+
+body {
+	margin: 0;
+	color: white;
+	background: @black;
+	overflow-x: hidden;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	color: @primary-color;
+	transition: @transition;
+
+	&:hover {
+		color: @primary-color-dark;
+	}
+}
+
+.clearfix {
+	&:after {
+		content: "";
+		display: block;
+		clear: both;
+	}
+}
+
+.flex-box {
+	display: flex;
+	flex-wrap: wrap;
+}

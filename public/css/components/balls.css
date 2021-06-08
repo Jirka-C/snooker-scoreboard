@@ -1,0 +1,49 @@
+.balls {
+  display: table;
+  margin: 20px auto;
+}
+.balls__item {
+  position: relative;
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  margin: 10px;
+  border-radius: 20px;
+  cursor: pointer;
+  box-shadow: 0 0 3px #000000 inset;
+}
+.balls__item::after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 10px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0) 100%);
+  top: 6px;
+  right: 6px;
+}
+.balls__item--red {
+  background-color: red;
+}
+.balls__item--yellow {
+  background-color: yellow;
+}
+.balls__item--green {
+  background-color: green;
+}
+.balls__item--brown {
+  background-color: brown;
+}
+.balls__item--blue {
+  background-color: blue;
+}
+.balls__item--pink {
+  background-color: palevioletred;
+}
+.balls__item--black {
+  background-color: black;
+}
+.balls__item--white {
+  background-color: white;
+}

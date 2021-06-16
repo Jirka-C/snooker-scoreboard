@@ -131,7 +131,7 @@ function ScoreBoard() {
 				setPlayerOne({...playerOne, frames: playerOne.frames - 1})
 			}
 			if(playerTwo.active && playerTwo.frames > 0){
-				setPlayerOne({...playerTwo, frames: playerTwo.frames - 1})
+				setPlayerTwo({...playerTwo, frames: playerTwo.frames - 1})
 			}
 
 			setCorrect(false)

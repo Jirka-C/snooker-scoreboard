@@ -32,7 +32,7 @@ function PlayerPanel({data}) {
 				Break
 			</div>
 			<div className="playerPanel__score-value">
-				{data.break ? data.break : 0}
+				{data.break}
 			</div>
 		</div>
 	</div>

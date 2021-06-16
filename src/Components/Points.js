@@ -2,7 +2,7 @@ import React from 'react'
 
 function Points({value, setBreak}) {
 	return (
-		<div className={"points__item"} data-value={value} onClick={() => setBreak(value)}>{value}</div>
+		<div className={"points__item"} onClick={() => setBreak(value)}>{value}</div>
 	)
 }
 

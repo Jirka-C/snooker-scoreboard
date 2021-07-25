@@ -1,142 +1,65 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import Points from '../Components/Points';
 import PlayerPanel from "../Components/PlayerPanel";
 import PlayerBreaks from '../Components/PlayerBreaks';
 
 function ScoreBoard() {
 	
-	const [playerOne, setPlayerOne] = useState({header: "Player 1", active: true, frames: 0, score: 0, break: "", breaks: []});
-	const [playerTwo, setPlayerTwo] = useState({header: "Player 2", active: false, frames: 0, score: 0, break: "", breaks: []});
+	const [playerOne, setPlayerOne] = useState({id: 1, header: "Player 1", active: true, frames: 0, score: 0, break: 0, breaks: []});
+	const [playerTwo, setPlayerTwo] = useState({id: 2, header: "Player 2", active: false, frames: 0, score: 0, break: 0, breaks: []});
 	const [correct, setCorrect] = useState(false);
 	
+	let activePlayer = playerOne;
+	let setActivePlayer = setPlayerOne;
+	
+	if(playerTwo.active){
+		activePlayer = playerTwo;
+		setActivePlayer = setPlayerTwo;
+	}
+
 	let breakString = "";
-/*
-	useEffect(() => {
-		if(playerOne.break){
-			const timer = setTimeout(() => {
+	let breakValue = 0;
 
-				if(correct && playerOne.score > 0){
-					console.log(playerOne.breaks)
-					setPlayerOne({...playerOne, score: playerOne.score - parseInt(playerOne.break)})
-					setCorrect(false)
-					return;
-				}
-
-				let getBreaks = playerOne.breaks;
-				if(parseInt(playerOne.break) >= 20){
-					getBreaks.push(parseInt(playerOne.break));
-				}
-
-				setPlayerOne({...playerOne, score: playerOne.score + parseInt(playerOne.break), break: ""})
-			  }, 3000);
-			  return () => clearTimeout(timer);
-		}
-    }, [playerOne]);
-
-	useEffect(() => {
-		if(playerTwo.break){
-			const timer = setTimeout(() => {
-
-				if(correct && playerTwo.score > 0){
-					setPlayerTwo({...playerTwo, score: playerTwo.score - parseInt(playerTwo.break)})
-					setCorrect(false)
-					return;
-				}				
-
-				let getBreaks = playerTwo.breaks;
-				if(parseInt(playerTwo.break) >= 20){
-					getBreaks.push(parseInt(playerTwo.break));
-				}
-
-				setPlayerTwo({...playerTwo, score: playerTwo.score + parseInt(playerTwo.break), break: ""})
-			  }, 3000);
-			  return () => clearTimeout(timer);
-		}
-    }, [playerTwo]);
-*/	
 	const setBreak = (value) => {
 
-		if(playerOne.active){
-			breakString = playerOne.break + value;
-			setPlayerOne({...playerOne, break: breakString})
+		breakString = activePlayer.break.toString() + value.toString();
+		breakValue = parseInt(breakString);
+
+		if(breakValue > 147){
+			breakValue = 0
 		}
 		
-		if(playerTwo.active){
-			breakString = playerTwo.break + value;
-			setPlayerTwo({...playerTwo, break: breakString})
-		}
-
+		setData({break: breakValue});
 	}
 
 	const changePlayer = () => {
-		if(playerOne.active){
-
-			if(parseInt(playerOne.break) > 147){
-				setPlayerOne({...playerOne, break: ""});
-				return;
+		if(correct){			
+			if(activePlayer.break === activePlayer.breaks[[activePlayer.breaks.length-1]]){
+				activePlayer.breaks.pop();
 			}
 
-			if(correct && playerOne.score > 0 && playerOne.score){
-				setPlayerOne({...playerOne, score: playerOne.score - parseInt(playerOne.break), break: ""})
-				if(parseInt(playerOne.break) === playerOne.breaks[playerOne.breaks.length-1]){
-					playerOne.breaks.pop();
-				}
-				setCorrect(false)
-				return;
-			}			
+			activePlayer.break = activePlayer.break * -1;
+		}
 
-			let getBreak = parseInt(playerOne.break) ? parseInt(playerOne.break) : 0;
-			let getBreaks = playerOne.breaks;
-			
-			if(getBreak >= 20){
-				getBreaks.push(getBreak);
-			}
+		if(activePlayer.break >= 20){
+			activePlayer.breaks.push(activePlayer.break);
+		}
 
-			setPlayerOne({...playerOne, active: false, break: "", score: playerOne.score + getBreak, breaks: getBreaks})
-			setPlayerTwo({...playerTwo, active: true})
+		setData({score: activePlayer.score + activePlayer.break, break: 0, breaks: activePlayer.breaks, active: false});
+		setCorrect(false);
+		
+		if(activePlayer.id === 1){
+			setPlayerTwo({...playerTwo, active: true});
 		}
 		
-		if(playerTwo.active){
-
-			if(parseInt(playerTwo.break) > 147){
-				setPlayerTwo({...playerTwo, break: ""});
-				return;
-			}			
-
-			if(correct && playerTwo.score > 0 && playerTwo.score){
-				setPlayerTwo({...playerTwo, score: playerTwo.score - parseInt(playerTwo.break), break: ""})
-				if(parseInt(playerTwo.break) === playerTwo.breaks[playerTwo.breaks.length-1]){
-					playerTwo.breaks.pop();
-				}
-				setCorrect(false)
-				return;
-			}			
-
-			let getBreak = parseInt(playerTwo.break) ? parseInt(playerTwo.break) : 0;
-			let getBreaks = playerTwo.breaks;
-
-			if(getBreak >= 20){
-				getBreaks.push(getBreak);
-			}
-
-			setPlayerTwo({...playerTwo, active: false, break: "", score: playerTwo.score + getBreak, breaks: getBreaks})
-			setPlayerOne({...playerOne, active: true})
-		}		
+		if(activePlayer.id === 2){
+			setPlayerOne({...playerOne, active: true});
+		}
 	}
 
 	const setFrame = () => {
-
-		if(correct){
-			if(playerOne.active && playerOne.frames > 0){
-				setPlayerOne({...playerOne, frames: playerOne.frames - 1})
-			}
-			if(playerTwo.active && playerTwo.frames > 0){
-				setPlayerTwo({...playerTwo, frames: playerTwo.frames - 1})
-			}
-
-			setCorrect(false)
-
-			return;
+		if(correct && activePlayer.frames > 0){
+			setData({frames: activePlayer.frames - 1})
 		}
 
 		if(playerOne.score > playerTwo.score){
@@ -149,15 +72,32 @@ function ScoreBoard() {
 			setPlayerTwo({...playerTwo, frames: playerTwo.frames + 1, score: 0, breaks: []})
 		}
 
+		setCorrect(false);
 	}
 
 	const setCorrectHandle = () => {
 		setCorrect(!correct);
 	}
 
+	const setBackSpacetHandle = () => {
+		let breakString = activePlayer.break.toString();
+		if(breakString.length > 1){
+			breakString = breakString.slice(0,-1)
+		} else {
+			breakString = "0"
+		}
+
+		let breakValue = parseInt(breakString);
+		setData({break: breakValue})
+	}
+
 	const reset = () => {
-		setPlayerOne({header: "Player 1", active: true, frames: 0, score: 0, break: "", breaks: []});
-		setPlayerTwo({header: "Player 2", active: false, frames: 0, score: 0, break: "", breaks: []});
+		setPlayerOne({id: 1, header: "Player 1", active: true, frames: 0, score: 0, break: 0, breaks: []});
+		setPlayerTwo({id: 2, header: "Player 2", active: false, frames: 0, score: 0, break: 0, breaks: []});
+	}
+
+	const setData = (data) => {
+		setActivePlayer({...activePlayer, ...data});
 	}
 
 	const pointsArray = [];
@@ -188,6 +128,7 @@ function ScoreBoard() {
 						<div className="points">
 							{points}
 							<div className={"points__item" + (correct ? " points__item--active" : "")} onClick={setCorrectHandle}>C</div>
+							<div className={"points__item"} onClick={setBackSpacetHandle}>&larr;</div>
 						</div>
 					</div>
 				</div>

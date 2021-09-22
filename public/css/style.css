@@ -451,6 +451,7 @@ a:hover {
 .button {
   display: inline-block;
   background: #ce132d;
+  color: white;
   text-transform: uppercase;
   text-align: center;
   font-weight: 600;
@@ -463,6 +464,9 @@ a:hover {
 }
 .button:hover {
   background: #141414;
+}
+.button--small {
+  padding: 5px 10px;
 }
 .points {
   display: flex;
@@ -541,4 +545,55 @@ a:hover {
 }
 .playerPanel--active {
   border-color: #ce132d;
+}
+.gamesOverview {
+  padding: 20px;
+}
+.gamesOverview__content {
+  display: flex;
+  border: 1px solid #ce132d;
+  align-items: center;
+}
+.gamesOverview__number {
+  font-weight: bold;
+  font-size: 20px;
+  text-align: center;
+  flex-grow: 1;
+}
+.gamesOverview__center {
+  border: 1px solid #ce132d;
+  border-top: 0;
+  border-bottom: 0;
+  padding: 10px 20px;
+  flex-grow: 3;
+}
+.gamesOverview__center-row {
+  padding: 5px 0;
+  display: flex;
+}
+.gamesOverview__date,
+.gamesOverview__continue {
+  flex-grow: 1;
+  text-align: center;
+}
+.gamesOverview__continue a {
+  display: inline;
+  font-size: 14px;
+  text-decoration: none;
+  text-transform: none;
+}
+.gamesOverview__continue a:hover {
+  color: white;
+}
+.gamesOverview__player {
+  font-weight: bold;
+  width: 50%;
+}
+.gamesOverview__frames,
+.gamesOverview__score,
+.gamesOverview__breaks {
+  flex-grow: 1;
+}
+.gamesOverview__breaks {
+  opacity: 0.6;
 }

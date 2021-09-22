@@ -4,10 +4,10 @@ function PlayerPanel({data}) {
 	return (
 	<div className={`playerPanel ${data.active && "playerPanel--active"}`}>
 		<div className="playerPanel__header">
-			{data.header}
+			Hrac 1
 		</div>
 
-		<input className="playerPanel__name" name="player-name" placeholder="Jméno hráče"  />
+		<input className="playerPanel__name" name="player-name" placeholder="Jméno hráče" defaultValue={data.name} />
 
 		<div className="playerPanel__score">
 			<div className="playerPanel__score-header">

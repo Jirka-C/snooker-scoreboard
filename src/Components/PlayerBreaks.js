@@ -2,13 +2,9 @@ import React from 'react'
 
 function PlayerBreaks({data}) {
 
-    const breaks = data.map((breakItem, index) => {
-        return <span key={index}>{breakItem}, </span>
-    });
-
     return (
         <div className="playerPanel__breaks">
-            Breaks: {breaks}
+            Breaks: {JSON.stringify(data)}
         </div>
     )
 }

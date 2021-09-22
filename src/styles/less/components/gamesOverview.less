@@ -1,0 +1,63 @@
+.gamesOverview {
+	padding: 20px;
+
+	&__content {
+		display: flex;
+		border: 1px solid @primary-color;
+		align-items: center;
+	}
+
+	&__number {
+		font-weight: bold;
+		font-size: 20px;
+		text-align: center;
+		flex-grow: 1;
+	}
+
+	&__center {
+		border: 1px solid @primary-color;
+		border-top: 0;
+		border-bottom: 0;
+		padding: 10px 20px;
+		flex-grow: 3;
+
+		&-row {
+			padding: 5px 0;
+			display: flex;
+		}
+	}
+
+	&__date,
+	&__continue {
+		flex-grow: 1;
+		text-align: center;
+	}
+
+	&__continue {
+		a {
+			display: inline;
+			font-size: 14px;
+			text-decoration: none;
+			text-transform: none;
+
+			&:hover {
+				color: white;
+			}
+		}
+	}
+
+	&__player {
+		font-weight: bold;
+		width: 50%;
+	}
+
+	&__frames,
+	&__score,
+	&__breaks {
+		flex-grow: 1;
+	}
+
+	&__breaks {
+		opacity: 0.6;
+	}
+}

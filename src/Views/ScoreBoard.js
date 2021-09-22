@@ -1,13 +1,26 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import Points from '../Components/Points';
 import PlayerPanel from "../Components/PlayerPanel";
 import PlayerBreaks from '../Components/PlayerBreaks';
+import {useParams} from "react-router-dom";
 
 function ScoreBoard() {
 	
-	const [playerOne, setPlayerOne] = useState({id: 1, header: "Player 1", active: true, frames: 0, score: 0, break: 0, breaks: []});
-	const [playerTwo, setPlayerTwo] = useState({id: 2, header: "Player 2", active: false, frames: 0, score: 0, break: 0, breaks: []});
+	const [playerOne, setPlayerOne] = useState({id: 1, name: "Player 1", active: true, frames: 0, score: 0, break: 0, breaks: []});
+	const [playerTwo, setPlayerTwo] = useState({id: 2, name: "Player 2", active: false, frames: 0, score: 0, break: 0, breaks: []});
 	const [correct, setCorrect] = useState(false);
+
+    let { id } = useParams();
+	useEffect(() => {
+		if(id){
+			fetch(`http://snooker/games/game/${id}`)
+			.then(response => response.json())
+			.then(game => {
+				setPlayerOne({...playerOne, name: game.player1, frames: game.frames1, score: game.score1, breaks: game.breaks1})
+				setPlayerTwo({...playerTwo, name: game.player2, frames: game.frames2, score: game.score2, breaks: game.breaks2})
+			});
+		}
+	}, [])
 	
 	let activePlayer = playerOne;
 	let setActivePlayer = setPlayerOne;
@@ -79,7 +92,7 @@ function ScoreBoard() {
 		setCorrect(!correct);
 	}
 
-	const setBackSpacetHandle = () => {
+	const setBackSpaceHandle = () => {
 		let breakString = activePlayer.break.toString();
 		if(breakString.length > 1){
 			breakString = breakString.slice(0,-1)
@@ -92,12 +105,31 @@ function ScoreBoard() {
 	}
 
 	const reset = () => {
-		setPlayerOne({id: 1, header: "Player 1", active: true, frames: 0, score: 0, break: 0, breaks: []});
-		setPlayerTwo({id: 2, header: "Player 2", active: false, frames: 0, score: 0, break: 0, breaks: []});
+		setPlayerOne({id: 1, name: "Player 1", active: true, frames: 0, score: 0, break: 0, breaks: []});
+		setPlayerTwo({id: 2, name: "Player 2", active: false, frames: 0, score: 0, break: 0, breaks: []});
 	}
 
 	const setData = (data) => {
 		setActivePlayer({...activePlayer, ...data});
+	}
+
+	const save = () => {
+
+		fetch(`http://snooker/games/game/${id}`, {
+			method: 'POST', // or 'PUT'
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			credentials: 'same-origin',
+			body: JSON.stringify({playerOne: playerOne, playerTwo: playerTwo}),
+		})
+		.then(response => response.json())
+		.then(data => {
+			console.log('Success:', data);
+		})
+		.catch((error) => {
+			console.error('Error:', error);
+		});
 	}
 
 	const pointsArray = [];
@@ -128,7 +160,7 @@ function ScoreBoard() {
 						<div className="points">
 							{points}
 							<div className={"points__item" + (correct ? " points__item--active" : "")} onClick={setCorrectHandle}>C</div>
-							<div className={"points__item"} onClick={setBackSpacetHandle}>&larr;</div>
+							<div className={"points__item"} onClick={setBackSpaceHandle}>&larr;</div>
 						</div>
 					</div>
 				</div>
@@ -146,6 +178,7 @@ function ScoreBoard() {
 						<div className="col-4">
 							<div className="button" onClick={setFrame}>Frame</div>
 						</div>
+							<div className="button" onClick={save}>Save</div>
 					</div>
 				</div>
 			</div>

@@ -1,5 +1,6 @@
 import React from 'react'
 import {Link} from "react-router-dom";
+import strings from '../strings.CZ';
 
 function GameRow({game}) {
 
@@ -8,8 +9,8 @@ function GameRow({game}) {
 
     return (
         <div className="gamesOverview__content">
-            <div className="gamesOverview__number">
-                {game.id}
+            <div className="gamesOverview__date">
+                {date}
             </div>
             <div className="gamesOverview__center">
                 <div className="gamesOverview__center-row">
@@ -25,11 +26,8 @@ function GameRow({game}) {
                     <div className="gamesOverview__breaks">{JSON.stringify(game.breaks1)}</div>
                 </div>
             </div>
-            <div className="gamesOverview__date">
-                {date}
-            </div>
             <div className="gamesOverview__continue">
-                <Link to={`/game/${game.id}`} className="button button--small">Pokracovat</Link>
+                <Link to={`/game/${game.id}`} className="button button--small">{strings.gamesOverview.continue}</Link>
             </div>
         </div>
     )

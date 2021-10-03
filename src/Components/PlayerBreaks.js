@@ -1,10 +1,11 @@
 import React from 'react'
+import strings from '../strings.CZ'
 
 function PlayerBreaks({data}) {
 
     return (
         <div className="playerPanel__breaks">
-            Breaks: {JSON.stringify(data)}
+            {strings.ScoreBoard.breaks}: {JSON.stringify(data)}
         </div>
     )
 }

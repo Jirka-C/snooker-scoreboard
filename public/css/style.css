@@ -468,6 +468,38 @@ a:hover {
 .button--small {
   padding: 5px 10px;
 }
+.pending {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.pending__text {
+  padding: 10px;
+}
+.pending__wrapper {
+  position: relative;
+  height: 10px;
+  width: 200px;
+  border: 1px solid #ce132d;
+  overflow: hidden;
+}
+.pending__inner {
+  position: absolute;
+  background: #ce132d;
+  height: 10px;
+  width: 30px;
+  animation: pending 1.5s linear infinite;
+}
+@keyframes pending {
+  0% {
+    transform: translateX(-30px);
+  }
+  100% {
+    transform: translateX(230px);
+  }
+}
 .points {
   display: flex;
   justify-content: center;
@@ -499,7 +531,7 @@ a:hover {
   text-align: center;
   padding-bottom: 20px;
   border: 1px solid transparent;
-  margin-top: 40px;
+  margin-top: 80px;
 }
 .playerPanel__header {
   background: #ce132d;
@@ -552,13 +584,17 @@ a:hover {
 .gamesOverview__content {
   display: flex;
   border: 1px solid #ce132d;
+  border-bottom: 0;
   align-items: center;
 }
-.gamesOverview__number {
+.gamesOverview__content:last-child {
+  border-bottom: 1px solid #ce132d;
+}
+.gamesOverview__date {
   font-weight: bold;
   font-size: 20px;
   text-align: center;
-  flex-grow: 1;
+  width: 150px;
 }
 .gamesOverview__center {
   border: 1px solid #ce132d;
@@ -571,9 +607,8 @@ a:hover {
   padding: 5px 0;
   display: flex;
 }
-.gamesOverview__date,
 .gamesOverview__continue {
-  flex-grow: 1;
+  width: 130px;
   text-align: center;
 }
 .gamesOverview__continue a {
@@ -589,6 +624,10 @@ a:hover {
   font-weight: bold;
   width: 50%;
 }
+.gamesOverview__score {
+  font-weight: bold;
+  color: darkgoldenrod;
+}
 .gamesOverview__frames,
 .gamesOverview__score,
 .gamesOverview__breaks {
@@ -596,4 +635,110 @@ a:hover {
 }
 .gamesOverview__breaks {
   opacity: 0.6;
+}
+.sidebar {
+  position: fixed;
+  z-index: 10;
+  width: 100%;
+  top: 0;
+  right: 0px;
+  min-height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.3s all 0s linear;
+}
+.sidebar__inner {
+  position: absolute;
+  width: 250px;
+  top: 0;
+  right: -250px;
+  background: #141414;
+  min-height: 100vh;
+  transition: 0.3s all 0s linear;
+}
+.sidebar a {
+  text-decoration: none;
+}
+.sidebar a:hover {
+  color: white;
+}
+.sidebar__buttons {
+  margin: 20px;
+  margin-top: 80px;
+}
+.sidebar__buttons .button {
+  margin-bottom: 20px;
+}
+.sidebar--active {
+  visibility: visible;
+  opacity: 1;
+}
+.sidebar--active .sidebar__inner {
+  right: 0;
+}
+.navbar-toggler {
+  position: fixed;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  cursor: pointer;
+  border: 0;
+  padding: 0;
+  top: 10px;
+  right: 10px;
+  z-index: 11;
+}
+.navbar-toggler span {
+  position: absolute;
+  display: block;
+  content: "";
+  width: 26px;
+  height: 2px;
+  background: white;
+  top: 18px;
+  left: 7px;
+  transition: 0s opacity 0.3s linear;
+}
+.navbar-toggler::before,
+.navbar-toggler::after {
+  position: absolute;
+  display: block;
+  content: "";
+  width: 26px;
+  height: 2px;
+  background: white;
+  top: 12px;
+  left: 7px;
+  transition: 0.3s top 0.3s linear, 0.3s transform 0s linear;
+}
+.navbar-toggler:after {
+  top: 24px;
+}
+.navbar-toggler--close span {
+  opacity: 0;
+}
+.navbar-toggler--close::before {
+  transform: rotate(45deg);
+  top: 18px;
+  transition: 0.3s top 0s linear, 0.3s transform 0.3s linear;
+}
+.navbar-toggler--close::after {
+  transform: rotate(-45deg);
+  top: 18px;
+  transition: 0.3s top 0s linear, 0.3s transform 0.3s linear;
+}
+.toast-alert {
+  position: fixed;
+  left: 40px;
+  bottom: 40px;
+  border: 1px solid #ce132d;
+  padding: 20px 40px;
+  z-index: 11;
+  font-weight: bold;
+}
+.toast-alert--success {
+  color: #155724;
+  background-color: #d4edda;
+  border-color: #c3e6cb;
 }

@@ -1,0 +1,32 @@
+.pending{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+
+    &__text{
+        padding: 10px;
+    }
+
+    &__wrapper{
+        position: relative;
+        height: 10px;
+        width: 200px;
+        border: 1px solid @primary-color;
+        overflow: hidden;
+    }
+
+    &__inner{
+        position: absolute;
+        background: @primary-color;
+        height: 10px;
+        width: 30px;
+        animation: pending 1.5s linear infinite;
+    }
+}
+
+@keyframes pending {
+    0%   {transform: translateX(-30px);}
+    100% {transform: translateX(230px);}
+  }

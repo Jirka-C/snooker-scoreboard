@@ -4,14 +4,19 @@
 	&__content {
 		display: flex;
 		border: 1px solid @primary-color;
+		border-bottom: 0;
 		align-items: center;
+
+		&:last-child{
+			border-bottom: 1px solid @primary-color;
+		}
 	}
 
-	&__number {
+	&__date {
 		font-weight: bold;
 		font-size: 20px;
 		text-align: center;
-		flex-grow: 1;
+		width: 150px;
 	}
 
 	&__center {
@@ -27,9 +32,8 @@
 		}
 	}
 
-	&__date,
 	&__continue {
-		flex-grow: 1;
+		width: 130px;
 		text-align: center;
 	}
 
@@ -49,6 +53,11 @@
 	&__player {
 		font-weight: bold;
 		width: 50%;
+	}
+
+	&__score{
+		font-weight: bold;
+		color: darkgoldenrod;
 	}
 
 	&__frames,

@@ -1,17 +1,18 @@
 import React from 'react'
+import strings from '../strings.CZ'
 
-function PlayerPanel({data}) {
+function PlayerPanel({data, onNameChange, playerId}) {
 	return (
 	<div className={`playerPanel ${data.active && "playerPanel--active"}`}>
 		<div className="playerPanel__header">
-			Hrac 1
+			{strings.ScoreBoard.player}
 		</div>
 
-		<input className="playerPanel__name" name="player-name" placeholder="Jméno hráče" defaultValue={data.name} />
+		<div className="playerPanel__name" placeholder="Jméno hráče" onChange={e =>onNameChange(e.target.value, playerId)} contentEditable={true} suppressContentEditableWarning={true}>{data.name}</div>
 
 		<div className="playerPanel__score">
 			<div className="playerPanel__score-header">
-				Frames
+				{strings.ScoreBoard.frames}
 			</div>
 			<div className="playerPanel__score-value">
 				{data.frames}
@@ -20,7 +21,7 @@ function PlayerPanel({data}) {
 
 		<div className="playerPanel__score playerPanel__score--big">
 			<div className="playerPanel__score-header">
-				Score
+				{strings.ScoreBoard.score}
 			</div>
 			<div className="playerPanel__score-value">
 				{data.score}
@@ -29,7 +30,7 @@ function PlayerPanel({data}) {
 
 		<div className="playerPanel__score">
 			<div className="playerPanel__score-header">
-				Break
+				{strings.ScoreBoard.break}
 			</div>
 			<div className="playerPanel__score-value">
 				{data.break}

@@ -1,0 +1,48 @@
+.sidebar{
+    position: fixed;
+    z-index: 10;
+    width: 100%;
+    top: 0;
+    right: 0px;
+    min-height: 100vh;
+    background: rgba(0, 0, 0, 0.8);
+    visibility: hidden;
+    opacity: 0;
+    transition: @transition;
+
+    &__inner{
+        position: absolute;
+        width: 250px;
+        top: 0;
+        right: -250px;
+        background: @black;
+        min-height: 100vh;
+        transition: @transition;
+    }
+
+    a{
+        text-decoration: none;
+
+        &:hover{
+            color: white;
+        }
+    }
+
+    &__buttons{
+        margin: 20px;
+        margin-top: 80px;
+
+        .button{
+            margin-bottom: 20px;
+        }
+    }
+
+    &--active{
+        visibility: visible;
+        opacity: 1;
+
+        .sidebar__inner{
+            right: 0;
+        }
+    }
+}

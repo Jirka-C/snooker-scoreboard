@@ -2,25 +2,45 @@ import React, {useState, useEffect} from 'react'
 import Points from '../Components/Points';
 import PlayerPanel from "../Components/PlayerPanel";
 import PlayerBreaks from '../Components/PlayerBreaks';
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
+import Pending from '../Components/Pending';
+import strings from '../strings.CZ';
+import ToastAlert from '../Components/ToastAlert';
 
 function ScoreBoard() {
 	
 	const [playerOne, setPlayerOne] = useState({id: 1, name: "Player 1", active: true, frames: 0, score: 0, break: 0, breaks: []});
 	const [playerTwo, setPlayerTwo] = useState({id: 2, name: "Player 2", active: false, frames: 0, score: 0, break: 0, breaks: []});
 	const [correct, setCorrect] = useState(false);
+	const [pending, setPending] = useState(true);
+	const [showToast, setShowToast] = useState(false);
+	const [sidebarActive, setSidebarActive] = useState(false);
 
     let { id } = useParams();
 	useEffect(() => {
 		if(id){
-			fetch(`http://snooker/games/game/${id}`)
+			fetch(`/games/game/${id}`)
 			.then(response => response.json())
 			.then(game => {
-				setPlayerOne({...playerOne, name: game.player1, frames: game.frames1, score: game.score1, breaks: game.breaks1})
-				setPlayerTwo({...playerTwo, name: game.player2, frames: game.frames2, score: game.score2, breaks: game.breaks2})
+				setPlayerOne({...playerOne, name: game.player1, frames: game.frames1, score: game.score1, breaks: game.breaks1});
+				setPlayerTwo({...playerTwo, name: game.player2, frames: game.frames2, score: game.score2, breaks: game.breaks2});
+				setPending(false);				
+			})
+			.catch((error) => {
+				// TODO Handle Error
+				console.error('Error:', error);
 			});
 		}
+		setPending(false);
 	}, [])
+
+	useEffect(() => {
+		if(showToast){
+			setTimeout(() => {
+				setShowToast(false)
+			}, 5000);
+		}
+	},[showToast]);
 	
 	let activePlayer = playerOne;
 	let setActivePlayer = setPlayerOne;
@@ -32,6 +52,16 @@ function ScoreBoard() {
 
 	let breakString = "";
 	let breakValue = 0;
+
+	const onNameChange = (name, playerId) => {
+		if(playerId === 1){
+			setPlayerOne({...playerOne, name: name})
+		}
+
+		if(playerId === 2){
+			setPlayerTwo({...playerTwo, name: name})
+		}
+	}
 
 	const setBreak = (value) => {
 
@@ -114,20 +144,23 @@ function ScoreBoard() {
 	}
 
 	const save = () => {
-
-		fetch(`http://snooker/games/game/${id}`, {
-			method: 'POST', // or 'PUT'
+		setSidebarActive(false);
+		fetch(`/games/game/${id ? id : ""}`, {
+			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 			},
 			credentials: 'same-origin',
 			body: JSON.stringify({playerOne: playerOne, playerTwo: playerTwo}),
 		})
-		.then(response => response.json())
-		.then(data => {
-			console.log('Success:', data);
+		.then(response => {
+			response.json()
+			if(response.ok){
+				setShowToast(true);
+			}
 		})
 		.catch((error) => {
+			// TODO Handle Error
 			console.error('Error:', error);
 		});
 	}
@@ -139,50 +172,69 @@ function ScoreBoard() {
 	pointsArray.push(0);
 	const points = pointsArray.map(point => <Points key={point} value={point} setBreak={setBreak} />);
 
+	const handleTogglerClick = () => {
+		setSidebarActive(!sidebarActive);
+	}
+
     return (
-		<section className="scoreBoard">
-			<div className="container">
-				<div className="row no-gutters">
-					<div className="col-6">
-						<PlayerPanel data={playerOne} />
-						<PlayerBreaks data={playerOne.breaks} />
-					</div>
-					<div className="col-6">
-						<PlayerPanel data={playerTwo} />
-						<PlayerBreaks data={playerTwo.breaks} />
-					</div>
-				</div>
+        pending ? 
+		<Pending /> :
+		<>
+			{showToast && <ToastAlert text={strings.gameSaved} role={"success"} />}
+			<div className={`navbar-toggler ${sidebarActive ? "navbar-toggler--close" : ""}`} onClick={handleTogglerClick}>
+				<span></span>
 			</div>
 
-			<div className="container">
-				<div className="row no-gutters">
-					<div className="col-12">
-						<div className="points">
-							{points}
-							<div className={"points__item" + (correct ? " points__item--active" : "")} onClick={setCorrectHandle}>C</div>
-							<div className={"points__item"} onClick={setBackSpaceHandle}>&larr;</div>
+			<nav id="sidebar" className={`sidebar ${sidebarActive ? "sidebar--active" : ""}`}>
+				<div className="sidebar__inner">
+					<div className="sidebar__buttons">
+						<div className="button" onClick={save}>{strings.ScoreBoard.save}</div>
+						<Link to={`/games`} className="button">{strings.ScoreBoard.history}</Link>
+					</div>
+				</div>
+			</nav>
+
+			<section className="scoreBoard">
+				<div className="container">
+					<div className="row no-gutters">
+						<div className="col-6">
+							<PlayerPanel data={playerOne} onNameChange={onNameChange} playerId={playerOne.id} />
+							<PlayerBreaks data={playerOne.breaks} />
+						</div>
+						<div className="col-6">
+							<PlayerPanel data={playerTwo} onNameChange={onNameChange}  playerId={playerTwo.id} />
+							<PlayerBreaks data={playerTwo.breaks} />
 						</div>
 					</div>
 				</div>
-			</div>
 
-			<div className="">
+				<div className="container">
+					<div className="row no-gutters">
+						<div className="col-12">
+							<div className="points">
+								{points}
+								<div className={"points__item" + (correct ? " points__item--active" : "")} onClick={setCorrectHandle}>C</div>
+								<div className={"points__item"} onClick={setBackSpaceHandle}>&larr;</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
 				<div className="container">
 					<div className="row no-gutters">
 						<div className="col-4">
-							<div className="button" onClick={reset}>Reset</div>
+							<div className="button" onClick={reset}>{strings.ScoreBoard.reset}</div>
 						</div>
 						<div className="col-4">
-							<div className="button" onClick={changePlayer}>Enter</div>
+							<div className="button" onClick={changePlayer}>{strings.ScoreBoard.enter}</div>
 						</div>
 						<div className="col-4">
-							<div className="button" onClick={setFrame}>Frame</div>
+							<div className="button" onClick={setFrame}>{strings.ScoreBoard.frame}</div>
 						</div>
-							<div className="button" onClick={save}>Save</div>
 					</div>
 				</div>
-			</div>
-		</section>
+			</section>
+		</>
     )
 }
 

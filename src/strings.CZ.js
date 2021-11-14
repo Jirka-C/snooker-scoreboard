@@ -3,7 +3,9 @@ import ScoreBoard from "./Views/ScoreBoard";
 const strings = {
     gamesOverview: {
         noResult: "Je nám líto, ale v historii jsme nenašli žádnou uloženou hru.",
-        continue: "Pokračovat"
+        continue: "Pokračovat",
+        newGame: "Nová hra",
+        loadMore: "Načíst další ...",
     },
     ScoreBoard: {
         player: "Hráč",

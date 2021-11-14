@@ -1,6 +1,15 @@
 .gamesOverview {
 	padding: 20px;
 
+	&__button{
+		margin: 20px auto;
+		width: 25%;
+
+		.button{
+			text-decoration: none;
+		}
+	}
+
 	&__content {
 		display: flex;
 		border: 1px solid @primary-color;
@@ -63,10 +72,11 @@
 	&__frames,
 	&__score,
 	&__breaks {
-		flex-grow: 1;
+		width: 10%;
 	}
 
 	&__breaks {
 		opacity: 0.6;
+		width: 30%;
 	}
 }

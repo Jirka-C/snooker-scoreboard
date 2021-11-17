@@ -79,4 +79,24 @@
 		opacity: 0.6;
 		width: 30%;
 	}
+
+	&__pending{
+		width: 30px;
+		height: 30px;
+		border: 5px solid @primary-color;
+		margin: 20px auto;
+		border-radius: 20px;
+		border-top-color: transparent;
+		animation: rotate 2s linear 0s infinite;
+	}
+
+	&__noResult{
+		margin: 20px auto;
+		text-align: center;
+	}
+
+	@keyframes rotate {
+		0% {transform: rotate(0deg);}
+		100% {transform: rotate(360deg);}
+	}
 }

@@ -150,7 +150,6 @@ function ScoreBoard() {
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			credentials: 'same-origin',
 			body: JSON.stringify({playerOne: playerOne, playerTwo: playerTwo}),
 		})
 		.then(response => {

@@ -5,7 +5,7 @@ const strings = {
         noResult: "Je nám líto, ale v historii jsme nenašli žádnou uloženou hru.",
         continue: "Pokračovat",
         newGame: "Nová hra",
-        loadMore: "Načíst další ...",
+        loadMore: "Načíst starší",
     },
     ScoreBoard: {
         player: "Hráč",

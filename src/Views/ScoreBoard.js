@@ -33,14 +33,6 @@ function ScoreBoard() {
 		}
 		setPending(false);
 	}, [])
-
-	useEffect(() => {
-		if(showToast){
-			setTimeout(() => {
-				setShowToast(false)
-			}, 5000);
-		}
-	},[showToast]);
 	
 	let activePlayer = playerOne;
 	let setActivePlayer = setPlayerOne;
@@ -179,7 +171,7 @@ function ScoreBoard() {
         pending ? 
 		<Pending /> :
 		<>
-			{showToast && <ToastAlert text={strings.gameSaved} role={"success"} />}
+			{showToast && <ToastAlert text={strings.gameSaved} role={"success"} setToast={setShowToast} />}
 			<div className={`navbar-toggler ${sidebarActive ? "navbar-toggler--close" : ""}`} onClick={handleTogglerClick}>
 				<span></span>
 			</div>

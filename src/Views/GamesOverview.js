@@ -4,47 +4,40 @@ import Pending from '../Components/Pending';
 import strings from '../strings.CZ'
 import {Link} from "react-router-dom";
 import ToastAlert from '../Components/ToastAlert';
-import useFetch from '../Helpers/useFetch';
+import axios from 'axios';
 
 function GamesOverview() {
 
     const [games, setGames] = useState([]);
     const [pageId, setPageId] = useState(0);
-    const [pending, setPending] = useState(true);
+    const [pending, setPending] = useState({status: true, text: strings.pending});
     const [disabled, setDisabled] = useState(false);
     const [totalRows, setTotalRows] = useState(0);
-    const [toastStatus, setToastStatus] = useState([]);
+    const [toastStatus, setToastStatus] = useState(null);
 
-    const fetchData = (url) => {
-        fetch(url)
+    useEffect(() => {
+        axios.get(`/games/overview/${pageId}`)
         .then(response => {
-            if(!response.ok){
-                throw (response.status);
-            }
-            return response.json()
-        })
-        .then(data => {
-            if(data){
-                setGames(games.concat(data.games))
-                setTotalRows(data.totalRows)
-                setPending(false)
+            if(response.data){
+                setGames(games.concat(response.data.games))
+                setTotalRows(response.data.totalRows)
+                setPending({status:false})
                 setDisabled(false)
-                setToastStatus([...toastStatus, data.status])
+                //setToastStatus(response.data.status)
             }
         })
         .catch(error => {
-            setToastStatus([...toastStatus, error])
+            setToastStatus(error.response.status)
         })
-    }
-
-    useEffect(() => {
-        fetchData(`/games/overview/${pageId}`)
+        .finally(
+            setToastStatus(null)
+        );
     }, [pageId])
 
     return (
         <>
-            <ToastAlert status={toastStatus} setStatus={setToastStatus} />
-            {pending
+            <ToastAlert toastStatus={toastStatus} />
+            {pending.status
             ? <Pending />
             : <section className="gamesOverview">
                 <div className="container">

@@ -21,7 +21,12 @@ const strings = {
         history: "Historie"
     },
     pending: "Načítám",
-    gameSaved: "Hra byla uložena"
+    saving: "Ukládám",
+    gameSaved: "Hra byla uložena",
+    e404: {
+        title: "OU ...  where's the cue ball going?",
+        text: "Stránka kterou hledáte patrně neexistuje"
+    }
 }
 
 export default strings;

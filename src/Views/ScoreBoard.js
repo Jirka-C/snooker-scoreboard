@@ -2,36 +2,46 @@ import React, {useState, useEffect} from 'react'
 import Points from '../Components/Points';
 import PlayerPanel from "../Components/PlayerPanel";
 import PlayerBreaks from '../Components/PlayerBreaks';
-import {Link, useParams} from "react-router-dom";
+import {Link, useParams, useHistory} from "react-router-dom";
 import Pending from '../Components/Pending';
 import strings from '../strings.CZ';
 import ToastAlert from '../Components/ToastAlert';
+import axios from 'axios';
 
 function ScoreBoard() {
 	
 	const [playerOne, setPlayerOne] = useState({id: 1, name: "Player 1", active: true, frames: 0, score: 0, break: 0, breaks: []});
 	const [playerTwo, setPlayerTwo] = useState({id: 2, name: "Player 2", active: false, frames: 0, score: 0, break: 0, breaks: []});
 	const [correct, setCorrect] = useState(false);
-	const [pending, setPending] = useState(true);
-	const [showToast, setShowToast] = useState(false);
+	const [pending, setPending] = useState({status: true, text: strings.pending});
 	const [sidebarActive, setSidebarActive] = useState(false);
+	const [toastStatus, setToastStatus] = useState(null);
 
     let { id } = useParams();
+	let history = useHistory();
+
 	useEffect(() => {
 		if(id){
-			fetch(`/games/game/${id}`)
-			.then(response => response.json())
-			.then(game => {
-				setPlayerOne({...playerOne, name: game.player1, frames: game.frames1, score: game.score1, breaks: game.breaks1});
-				setPlayerTwo({...playerTwo, name: game.player2, frames: game.frames2, score: game.score2, breaks: game.breaks2});
-				setPending(false);				
+			axios.get(`/games/game/${id}`)
+			.then(response => {
+				if(response.data.game){
+					let gameData = response.data.game
+					setPlayerOne({...playerOne, name: gameData.player1, frames: gameData.frames1, score: gameData.score1, breaks: gameData.breaks1});
+					setPlayerTwo({...playerTwo, name: gameData.player2, frames: gameData.frames2, score: gameData.score2, breaks: gameData.breaks2});
+					setPending({status: false});
+				} else {
+					setToastStatus(response.data.status)
+				}
 			})
-			.catch((error) => {
-				// TODO Handle Error
-				console.error('Error:', error);
-			});
+			.catch(error => {
+				setToastStatus(error.response.status)
+			})
+			.finally(
+				setToastStatus(null)
+			);
+		} else {
+			setPending({status: false});
 		}
-		setPending(false);
 	}, [])
 	
 	let activePlayer = playerOne;
@@ -137,23 +147,24 @@ function ScoreBoard() {
 
 	const save = () => {
 		setSidebarActive(false);
-		fetch(`/games/game/${id ? id : ""}`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({playerOne: playerOne, playerTwo: playerTwo}),
-		})
-		.then(response => {
-			response.json()
-			if(response.ok){
-				setShowToast(true);
+		setPending({status: true, text: strings.saving});
+
+		axios.post(`/games/game/${id ? id : ""}`,
+			JSON.stringify({playerOne: playerOne, playerTwo: playerTwo})
+		)
+		  .then(function (response) {
+			if(response.data.newId){
+				history.push(`/game/${response.data.newId}`)
 			}
-		})
-		.catch((error) => {
-			// TODO Handle Error
-			console.error('Error:', error);
-		});
+			setToastStatus(response.data.status)
+		  })
+		  .catch(function (error) {
+			setToastStatus(error.response.status)
+		  })
+		  .finally(() => {
+			setPending({status: false, text: null});
+			  setToastStatus(null);
+		  });
 	}
 
 	const pointsArray = [];
@@ -168,14 +179,11 @@ function ScoreBoard() {
 	}
 
     return (
-        pending ? 
-		<Pending /> :
 		<>
-			{showToast && <ToastAlert text={strings.gameSaved} role={"success"} setToast={setShowToast} />}
+			<ToastAlert toastStatus={toastStatus} />
 			<div className={`navbar-toggler ${sidebarActive ? "navbar-toggler--close" : ""}`} onClick={handleTogglerClick}>
 				<span></span>
 			</div>
-
 			<nav id="sidebar" className={`sidebar ${sidebarActive ? "sidebar--active" : ""}`}>
 				<div className="sidebar__inner">
 					<div className="sidebar__buttons">
@@ -185,7 +193,9 @@ function ScoreBoard() {
 				</div>
 			</nav>
 
-			<section className="scoreBoard">
+			{pending.status
+			? <Pending text={pending.text} />
+			: <section className="scoreBoard">
 				<div className="container">
 					<div className="row no-gutters">
 						<div className="col-6">
@@ -224,7 +234,7 @@ function ScoreBoard() {
 						</div>
 					</div>
 				</div>
-			</section>
+			</section>}
 		</>
     )
 }

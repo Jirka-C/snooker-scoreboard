@@ -8,7 +8,7 @@ function PlayerPanel({data, onNameChange, playerId}) {
 			{strings.ScoreBoard.player}
 		</div>
 
-		<div className="playerPanel__name" placeholder="Jméno hráče" onChange={e =>onNameChange(e.target.value, playerId)} contentEditable={true} suppressContentEditableWarning={true}>{data.name}</div>
+		<input className="playerPanel__name" placeholder="Jméno hráče" onChange={e =>onNameChange(e.target.value, playerId)} value={data.name}/>
 
 		<div className="playerPanel__score">
 			<div className="playerPanel__score-header">

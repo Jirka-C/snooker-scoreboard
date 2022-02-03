@@ -108,13 +108,13 @@ function ScoreBoard() {
 		}
 
 		if(playerOne.score > playerTwo.score){
-			setPlayerOne({...playerOne, frames: playerOne.frames + 1, score: 0, breaks: []})
-			setPlayerTwo({...playerTwo, score: 0, breaks: []})
+			setPlayerOne({...playerOne, frames: playerOne.frames + 1, score: 0})
+			setPlayerTwo({...playerTwo, score: 0})
 		}
 
 		if(playerOne.score < playerTwo.score){
-			setPlayerOne({...playerOne, score: 0, breaks: []})
-			setPlayerTwo({...playerTwo, frames: playerTwo.frames + 1, score: 0, breaks: []})
+			setPlayerOne({...playerOne, score: 0})
+			setPlayerTwo({...playerTwo, frames: playerTwo.frames + 1, score: 0})
 		}
 
 		setCorrect(false);

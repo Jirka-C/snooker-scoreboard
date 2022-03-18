@@ -80,7 +80,6 @@ function ScoreBoard() {
 
 	const changePlayer = () => {
 		setGameHistory([...gameHistory, {playerId: activePlayer.id, frames: activePlayer.frames, score: activePlayer.score, break: activePlayer.break, breaks: [...activePlayer.breaks]}])
-		console.log(gameHistory);
 
 		if(correct){			
 			if(activePlayer.break === activePlayer.breaks[[activePlayer.breaks.length-1]]){

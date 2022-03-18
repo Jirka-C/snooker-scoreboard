@@ -11,6 +11,7 @@ const strings = {
         player: "Hráč",
         reset: "Reset",
         enter: "Zapsat",
+        back: "Zpět",
         frame: "Frame",
         save: "Uložit",
         delete: "Smazat",

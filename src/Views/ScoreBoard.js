@@ -12,6 +12,7 @@ function ScoreBoard() {
 	
 	const [playerOne, setPlayerOne] = useState({id: 1, name: "Player 1", active: true, frames: 0, score: 0, break: 0, breaks: []});
 	const [playerTwo, setPlayerTwo] = useState({id: 2, name: "Player 2", active: false, frames: 0, score: 0, break: 0, breaks: []});
+	const [gameHistory, setGameHistory] = useState([{playerId: 1, frames: 0, score: 0, break: 0, breaks: []},{playerId: 2, frames: 0, score: 0, break: 0, breaks: []}]);
 	const [correct, setCorrect] = useState(false);
 	const [pending, setPending] = useState({status: true, text: strings.pending});
 	const [sidebarActive, setSidebarActive] = useState(false);
@@ -78,6 +79,9 @@ function ScoreBoard() {
 	}
 
 	const changePlayer = () => {
+		setGameHistory([...gameHistory, {playerId: activePlayer.id, frames: activePlayer.frames, score: activePlayer.score, break: activePlayer.break, breaks: [...activePlayer.breaks]}])
+		console.log(gameHistory);
+
 		if(correct){			
 			if(activePlayer.break === activePlayer.breaks[[activePlayer.breaks.length-1]]){
 				activePlayer.breaks.pop();
@@ -118,6 +122,27 @@ function ScoreBoard() {
 		}
 
 		setCorrect(false);
+	}
+
+	const backStatus = () => {
+		if(!gameHistory.length){
+			return;
+		}
+
+		let historyData = gameHistory[gameHistory.length - 1];		
+
+		if(historyData.playerId === 1){
+			setPlayerOne({...playerOne, frames: historyData.frames, score: historyData.score, break: historyData.break, breaks: historyData.breaks, active: true})
+			setPlayerTwo({...playerTwo, active: false})
+		}
+
+		if(historyData.playerId === 2){
+			setPlayerTwo({...playerTwo, frames: historyData.frames, score: historyData.score, break: historyData.break, breaks: historyData.breaks, active: true})
+			setPlayerOne({...playerOne, active: false})
+		}
+
+		gameHistory.pop()
+		setGameHistory(gameHistory);
 	}
 
 	const setCorrectHandle = () => {
@@ -223,13 +248,16 @@ function ScoreBoard() {
 
 				<div className="container">
 					<div className="row no-gutters">
-						<div className="col-4">
+						<div className="col-3">
+							<div className="button" onClick={backStatus}>{strings.ScoreBoard.back}</div>
+						</div>						
+						<div className="col-3">
 							<div className="button" onClick={reset}>{strings.ScoreBoard.reset}</div>
 						</div>
-						<div className="col-4">
+						<div className="col-3">
 							<div className="button" onClick={changePlayer}>{strings.ScoreBoard.enter}</div>
 						</div>
-						<div className="col-4">
+						<div className="col-3">
 							<div className="button" onClick={setFrame}>{strings.ScoreBoard.frame}</div>
 						</div>
 					</div>

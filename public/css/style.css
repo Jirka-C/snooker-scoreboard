@@ -732,6 +732,11 @@ a:hover {
   right: 10px;
   z-index: 11;
 }
+.navbar-toggler div {
+  left: -50px;
+  position: absolute;
+  top: 12px;
+}
 .navbar-toggler span {
   position: absolute;
   display: block;

@@ -163,6 +163,7 @@ function ScoreBoard() {
 	const reset = () => {
 		setPlayerOne({id: 1, name: "Player 1", active: true, frames: 0, score: 0, break: 0, breaks: []});
 		setPlayerTwo({id: 2, name: "Player 2", active: false, frames: 0, score: 0, break: 0, breaks: []});
+		handleTogglerClick();
 	}
 
 	const setData = (data) => {
@@ -206,6 +207,7 @@ function ScoreBoard() {
 		<>
 			<ToastAlert toastStatus={toastStatus} />
 			<div className={`navbar-toggler ${sidebarActive ? "navbar-toggler--close" : ""}`} onClick={handleTogglerClick}>
+				<div>Menu</div>
 				<span></span>
 			</div>
 			<nav id="sidebar" className={`sidebar ${sidebarActive ? "sidebar--active" : ""}`}>
@@ -213,6 +215,7 @@ function ScoreBoard() {
 					<div className="sidebar__buttons">
 						<div className="button" onClick={save}>{strings.ScoreBoard.save}</div>
 						<Link to={`/games`} className="button">{strings.ScoreBoard.history}</Link>
+						<div className="button" onClick={reset}>{strings.ScoreBoard.reset}</div>
 					</div>
 				</div>
 			</nav>
@@ -250,10 +253,7 @@ function ScoreBoard() {
 						<div className="col-3">
 							<div className="button" onClick={backStatus}>{strings.ScoreBoard.back}</div>
 						</div>						
-						<div className="col-3">
-							<div className="button" onClick={reset}>{strings.ScoreBoard.reset}</div>
-						</div>
-						<div className="col-3">
+						<div className="col-6">
 							<div className="button" onClick={changePlayer}>{strings.ScoreBoard.enter}</div>
 						</div>
 						<div className="col-3">

@@ -2,6 +2,7 @@ import React from "react";
 import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import GamesOverview from "./Views/GamesOverview";
 import ScoreBoard from "./Views/ScoreBoard";
+import PlayersList from "./Views/PlayersList";
 import NoMatch from "./Views/NoMatch";
 
 function App() {
@@ -14,6 +15,9 @@ function App() {
 				<Route path="/game/:id?" children={<ScoreBoard />} />
 				<Route path="/games">
 					<GamesOverview />
+				</Route>
+				<Route path="/players">
+					<PlayersList />
 				</Route>
 				<Route path="*">
 					<NoMatch />

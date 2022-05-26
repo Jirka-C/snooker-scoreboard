@@ -16,7 +16,7 @@ function GamesOverview() {
     const [toastStatus, setToastStatus] = useState(null);
 
     useEffect(() => {
-        axios.get(`/games/overview/${pageId}`)
+        axios.get(`http://api.cechmanek.com/games/overview/${pageId}`)
         .then(response => {
             if(response.data){
                 setGames(games.concat(response.data.games))

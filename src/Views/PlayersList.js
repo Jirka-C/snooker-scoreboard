@@ -10,7 +10,7 @@ function PlayersList() {
   const [playersList, setPlayersList] = useState([]);
 
   useEffect(() => {
-    axios.get("http://api.cechmanek.com/players/")
+    axios.get(`${process.env.REACT_APP_API_BASE_PATH}/players/`)
     .then(response => {
         if(response.data){
           setPlayersList(response.data.players)
@@ -28,7 +28,7 @@ function PlayersList() {
       return;
     }
 
-		axios.post(`http://api.cechmanek.com/players/save/${id}`,
+		axios.post(`${process.env.REACT_APP_API_BASE_PATH}/players/save/${id}`,
       JSON.stringify({player: player})
     )
     .then(response => {
@@ -43,7 +43,7 @@ function PlayersList() {
   }
 
   const deletePlayer = (id) => {
-    axios.get(`http://api.cechmanek.com/players/delete/${id}`)
+    axios.get(`${process.env.REACT_APP_API_BASE_PATH}/players/delete/${id}`)
     .then(response => {
       if(response.data){
         setPlayersList(response.data.players)

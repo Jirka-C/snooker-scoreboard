@@ -7,7 +7,7 @@ function PlayerPanel({data, onNameChange, playerId}) {
 	const [playersList, setPlayersList] = useState([]);
 
 	useEffect(() => {
-		axios.get('http://api.cechmanek.com/players/')
+		axios.get(`${process.env.REACT_APP_API_BASE_PATH}/players`)
 		.then(response => {
 			if(response.data){
 				setPlayersList(response.data.players)

@@ -23,7 +23,7 @@ function ScoreBoard() {
 
 	useEffect(() => {
 		if(id){
-			axios.get(`http://api.cechmanek.com/games/game/${id}`)
+			axios.get(`${process.env.REACT_APP_API_BASE_PATH}/games/game/${id}`)
 			.then(response => {
 				if(response.data.game){
 					let gameData = response.data.game
@@ -174,7 +174,7 @@ function ScoreBoard() {
 		setSidebarActive(false);
 		setPending({status: true, text: strings.saving});
 
-		axios.post(`http://api.cechmanek.com/games/game/${id ? id : ""}`,
+		axios.post(`${process.env.REACT_APP_API_BASE_PATH}/games/game/${id ? id : ""}`,
 			JSON.stringify({playerOne: playerOne, playerTwo: playerTwo})
 		)
 		  .then(function (response) {

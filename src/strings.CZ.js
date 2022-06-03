@@ -9,6 +9,7 @@ const strings = {
     },
     ScoreBoard: {
         player: "Hráč",
+        players: "Hráči",
         reset: "Reset",
         enter: "Zapsat",
         back: "Zpět",

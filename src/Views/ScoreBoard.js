@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect } from 'react'
 import Points from '../Components/Points';
 import PlayerPanel from "../Components/PlayerPanel";
 import PlayerBreaks from '../Components/PlayerBreaks';
@@ -9,7 +9,7 @@ import ToastAlert from '../Components/ToastAlert';
 import axios from 'axios';
 
 function ScoreBoard() {
-	
+
 	const [playerOne, setPlayerOne] = useState({id: 1, name: "Player 1", active: true, frames: 0, score: 0, break: 0, breaks: []});
 	const [playerTwo, setPlayerTwo] = useState({id: 2, name: "Player 2", active: false, frames: 0, score: 0, break: 0, breaks: []});
 	const [gameHistory, setGameHistory] = useState([{playerId: 1, frames: 0, score: 0, break: 0, breaks: []},{playerId: 2, frames: 0, score: 0, break: 0, breaks: []}]);
@@ -23,7 +23,7 @@ function ScoreBoard() {
 
 	useEffect(() => {
 		if(id){
-			axios.get(`/games/game/${id}`)
+			axios.get(`${process.env.REACT_APP_API_BASE_PATH}/games/game/${id}`)
 			.then(response => {
 				if(response.data.game){
 					let gameData = response.data.game
@@ -174,7 +174,7 @@ function ScoreBoard() {
 		setSidebarActive(false);
 		setPending({status: true, text: strings.saving});
 
-		axios.post(`/games/game/${id ? id : ""}`,
+		axios.post(`${process.env.REACT_APP_API_BASE_PATH}/games/game/${id ? id : ""}`,
 			JSON.stringify({playerOne: playerOne, playerTwo: playerTwo})
 		)
 		  .then(function (response) {
@@ -215,6 +215,7 @@ function ScoreBoard() {
 					<div className="sidebar__buttons">
 						<div className="button" onClick={save}>{strings.ScoreBoard.save}</div>
 						<Link to={`/games`} className="button">{strings.ScoreBoard.history}</Link>
+						<Link to={`/players`} className="button">{strings.ScoreBoard.players}</Link>
 						<div className="button" onClick={reset}>{strings.ScoreBoard.reset}</div>
 					</div>
 				</div>

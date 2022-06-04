@@ -28,7 +28,7 @@ function PlayerPanel({data, onNameChange, playerId}) {
 		<select className="playerPanel__name" onChange={e =>onNameChange(e.target.value, playerId)} defaultValue="---">
 			<option disabled>---</option>
 			{playersList.map(({id, player}) => 
-				<option key={id} value={player}>{player}</option>
+				<option key={id} value={player} selected={data.name === player} >{player}</option>
 			)}
 		</select>
 
